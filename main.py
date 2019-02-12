@@ -33,13 +33,13 @@ for f_path in test_files:
         test_data.append(f.read())
 
 # targets: first 12500 are pos, next 12500 are neg
-targets = [1 if i<12500 else 0 for i in range(25000)]
+targets = [0 if i<12500 else 1 for i in range(25000)]
 
 train_data_clean = preprocess(train_data, advanced=False)
 test_data_clean = preprocess(test_data, advanced=False)
 
 # splitting the data
-X_train, X_validation, y_train, y_validation = train_test_split(train_data, targets, train_size=0.8, test_size=0.2)
+X_train, X_validation, y_train, y_validation = train_test_split(train_data, targets, train_size=0.8, test_size=0.2, random_state=551)
 
 # Bag of Words vectorization
 cv = CountVectorizer().fit(X_train)
@@ -60,17 +60,17 @@ def display_results(y_val, y_pred, heading):
     print(metrics.classification_report(y_val, y_pred))
     print("Accuracy % = ", metrics.accuracy_score(y_val, y_pred))
 
-clf_NB = MultinomialNB().fit(X_train_normalized, y_train)
-y_pred = clf_NB.predict(X_validation_normalized)
-display_results(y_validation, y_pred,"")
+# clf_NB = MultinomialNB().fit(X_train_normalized, y_train)
+# y_pred = clf_NB.predict(X_validation_normalized)
+# display_results(y_validation, y_pred,"")
 
 clf_LR = LogisticRegression().fit(X_train_normalized, y_train)
 y_pred = clf_LR.predict(X_validation_normalized)
 display_results(y_validation, y_pred,"")
 
-clf_DT = DecisionTreeClassifier().fit(X_train_normalized, y_train)
-y_pred = clf_DT.predict(X_validation_normalized)
-display_results(y_validation, y_pred,"")
+# clf_DT = DecisionTreeClassifier().fit(X_train_normalized, y_train)
+# y_pred = clf_DT.predict(X_validation_normalized)
+# display_results(y_validation, y_pred,"")
 
 clf_SVM = LinearSVC().fit(X_train_normalized, y_train)
 y_pred = clf_SVM.predict(X_validation_normalized)
