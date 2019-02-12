@@ -6,8 +6,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import Normalizer
-from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
+from sklearn.svm import LinearSVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import MultinomialNB
 
 train_data = []
 test_data = []
@@ -22,8 +25,6 @@ train_pos = glob.glob(os.path.join(os.getcwd(), "Dataset/train/pos", "*.txt"))
 for f_path in train_pos:
     with open(f_path) as f:
         train_data.append(f.read())
-# print(train_data[0])
-# print(preprocess(train_data[0]))
 
 # test data
 test_files = glob.glob(os.path.join(os.getcwd(), "Dataset/test", "*.txt"))
@@ -39,9 +40,6 @@ test_data_clean = preprocess(test_data, advanced=False)
 
 # splitting the data
 X_train, X_validation, y_train, y_validation = train_test_split(train_data, targets, train_size=0.8, test_size=0.2)
-# print(train_data_clean[0])
-# print(test_data_clean[0])
-# print(y_train[0])
 
 # Bag of Words vectorization
 cv = CountVectorizer().fit(X_train)
@@ -58,7 +56,23 @@ normalizer_tranformer = Normalizer().fit(X=X_train_tfidf)
 X_train_normalized = normalizer_tranformer.transform(X_train_tfidf)
 X_validation_normalized = normalizer_tranformer.transform(X_validation_tfidf)
 
-clf = MultinomialNB().fit(X_train_normalized, y_train)
-y_pred = clf.predict(X_validation_normalized)
+def display_results(y_val, y_pred):
+    print(metrics.classification_report(y_val, y_pred))
+    print("Accuracy % = ", metrics.accuracy_score(y_val, y_pred))
 
-print(metrics.classification_report(y_validation, y_pred))
+
+clf_NB = MultinomialNB().fit(X_train_normalized, y_train)
+y_pred = clf_NB.predict(X_validation_normalized)
+display_results(y_validation, y_pred)
+
+clf_LR = LogisticRegression().fit(X_train_normalized, y_train)
+y_pred = clf_LR.predict(X_validation_normalized)
+display_results(y_validation, y_pred)
+
+clf_DT = DecisionTreeClassifier().fit(X_train_normalized, y_train)
+y_pred = clf_DT.predict(X_validation_normalized)
+display_results(y_validation, y_pred)
+
+clf_SVM = LinearSVC().fit(X_train_normalized, y_train)
+y_pred = clf_SVM.predict(X_validation_normalized)
+display_results(y_validation, y_pred)
