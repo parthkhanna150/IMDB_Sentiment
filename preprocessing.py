@@ -1,16 +1,21 @@
 from bs4 import BeautifulSoup
 import re, string, unicodedata
+from nltk import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import LancasterStemmer, WordNetLemmatizer
 
-def strip_html(text):
+def remove_html(text):
     soup = BeautifulSoup(text, "html.parser")
     return soup.get_text()
 
-def remove_between_square_brackets(text):
-    return re.sub('\[[^]]*\]', '', text)
+def remove_links_characters(text):
+    text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+    text = re.sub('\[[^]]*\]', '', text)
+    return text
 
 def regular_preprocess(text):
-    text = strip_html(text)
-    text = remove_between_square_brackets(text)
+    text = remove_html(text)
+    text = remove_links_characters(text)
     return text
 
 def advanced_preprocess(text):

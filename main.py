@@ -56,23 +56,22 @@ normalizer_tranformer = Normalizer().fit(X=X_train_tfidf)
 X_train_normalized = normalizer_tranformer.transform(X_train_tfidf)
 X_validation_normalized = normalizer_tranformer.transform(X_validation_tfidf)
 
-def display_results(y_val, y_pred):
+def display_results(y_val, y_pred, heading):
     print(metrics.classification_report(y_val, y_pred))
     print("Accuracy % = ", metrics.accuracy_score(y_val, y_pred))
 
-
 clf_NB = MultinomialNB().fit(X_train_normalized, y_train)
 y_pred = clf_NB.predict(X_validation_normalized)
-display_results(y_validation, y_pred)
+display_results(y_validation, y_pred,"")
 
 clf_LR = LogisticRegression().fit(X_train_normalized, y_train)
 y_pred = clf_LR.predict(X_validation_normalized)
-display_results(y_validation, y_pred)
+display_results(y_validation, y_pred,"")
 
 clf_DT = DecisionTreeClassifier().fit(X_train_normalized, y_train)
 y_pred = clf_DT.predict(X_validation_normalized)
-display_results(y_validation, y_pred)
+display_results(y_validation, y_pred,"")
 
 clf_SVM = LinearSVC().fit(X_train_normalized, y_train)
 y_pred = clf_SVM.predict(X_validation_normalized)
-display_results(y_validation, y_pred)
+display_results(y_validation, y_pred,"")
