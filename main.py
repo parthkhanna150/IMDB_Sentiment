@@ -12,6 +12,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
+import csv
+
 
 # copy contents of all files in both folders into a list
 train_data = []
@@ -56,7 +58,7 @@ pclf = Pipeline([
     ('tfidf', TfidfTransformer()),
     ('norm', Normalizer()),
     # ('clf', LogisticRegression()),
-    ('clf', LinearSVC()),
+    ('clf', LinearSVC(C=0.5)),
 ])
 
 def display_results(y_val, y_pred):
@@ -66,5 +68,10 @@ def display_results(y_val, y_pred):
 pclf.fit(X_train, y_train)
 y_pred = pclf.predict(test_data_clean)
 print(y_pred)
+
+with open('submission.csv', 'w') as f:
+    writer = csv.writer(f)
+    wr.writerow(("Id", "Category"))
+    writer.writerows(zip(test_files_ids, y_pred))
 
 # display_results(y_validation, y_pred)
