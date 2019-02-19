@@ -40,6 +40,11 @@ def natural_keys(text):
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 test_files = (glob.glob(os.path.join(os.getcwd(), "Dataset/test", "*.txt")))
+test_files_names
+for f_path in test_files:
+    with open(f_path) as f:
+        test_data.append(f.read())
+
 for f_path in test_files:
     with open(f_path) as f:
         test_data.append(f.read())
