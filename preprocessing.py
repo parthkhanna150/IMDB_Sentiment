@@ -1,11 +1,7 @@
 import re, string, unicodedata
-# import nltk
-# nltk.download('stopwords')
 # import contractions
 # import inflect
 from bs4 import BeautifulSoup
-# from nltk import word_tokenize
-# from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
 def remove_html(text):
@@ -13,19 +9,16 @@ def remove_html(text):
     return soup.get_text()
 
 def remove_links_characters(text):
-    text = re.sub(r'^https?:\/\.\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+    text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
     text = re.sub('\[[^]]*\]', '', text)
     return text
 
 def regular_preprocess(text):
     text = remove_html(text)
     text = remove_links_characters(text)
-    # text = replace_contractions(text)
     return text
 
 def remove_stopwords(docs, stopwords):
-    with open('english') as f:
-        stopwords = f.read().splitlines()
     docs_ref = []
     for doc in docs:
         word_list = doc.lower().split()
@@ -44,7 +37,7 @@ def stem_words(docs):
             stems.append(stem)
         stems_str = ' '.join(stems)
         stems.append(stems_str)
-    return stems
+    return stems_str
 
 def preprocess(data):
     refined_data = []
