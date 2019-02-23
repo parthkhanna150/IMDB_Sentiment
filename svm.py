@@ -8,7 +8,6 @@ SVMpclf = Pipeline([
 
 SVMpclf.fit(X_train, y_train)
 y_pred_svm_val = SVMpclf.predict(X_validation)
-
 y_pred_svm_test = SVMpclf.predict(test_data_clean)
 with open('submissionLSVM.csv', 'w') as f:
     writer = csv.writer(f)

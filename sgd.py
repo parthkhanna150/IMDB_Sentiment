@@ -6,10 +6,18 @@ SGDpclf = Pipeline([
     ('clf', SGDClassifier(alpha=1e-5, epsilon=0.1, random_state=1)),
 ])
 
+# SGD2pclf = Pipeline([
+#     ('vect', CountVectorizer(binary=True)),
+#     ('clf', SGDClassifier(alpha=1e-5, epsilon=0.1, random_state=1)),
+# ])
+#
+
+# try one and two grams with and without tfidf
+
 SGDpclf.fit(X_train, y_train)
 y_pred_sgd_val = SGDpclf.predict(X_validation)
-
 y_pred_sgd_test = SGDpclf.predict(test_data_clean)
+
 with open('submissionSGD.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerow(("Id", "Category"))
